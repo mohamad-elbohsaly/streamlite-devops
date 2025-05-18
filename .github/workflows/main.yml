@@ -17,10 +17,11 @@ on:
     - cron: "0 0 * * *" # Every day at midnight UTC
   release:
     types: [created]
-  workflow_run:
-    workflows: ["StreamLite CI"]
-    types:
-      - completed
+# file defines that exact workflow, causing an illegal self-reference.
+#   workflow_run:
+#     workflows: ["StreamLite CI"]
+#     types:
+#       - completed
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,4 +42,4 @@ jobs:
         run: echo "No tests yet" && exit 0
 
       - name: Build Docker image
-        run: docker build -t streamlite ./app
+        run: docker build -t streamlite-app ./app
