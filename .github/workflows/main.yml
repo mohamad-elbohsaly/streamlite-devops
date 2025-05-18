@@ -1,0 +1,39 @@
+name: StreamLite CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # Every day at midnight UTC
+  release:
+    types: [created]
+  workflow_run:
+    workflows: ["StreamLite CI"]
+    types:
+      - completed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./app
+
+      - name: Run basic test
+        run: echo "No tests yet" && exit 0
+
+      - name: Build Docker image
+        run: docker build -t streamlite ./app
